@@ -16,6 +16,8 @@ class Store {
         this._updaters = {};
         this._emitter = new EventEmitter;
         this._eventName = 'change';
+        this._middles = [];
+        this._middleIndex = 0;
     }
     
     get state() {
@@ -29,6 +31,18 @@ class Store {
      */
     setUpdaters(fns) {
         this._updaters = fns;
+    }
+
+    /**
+     * 添加中间件
+     * 
+     * @param {function} middle
+     * 
+     * @memberOf Store
+     */
+    use(middle) {
+        this._middles.push(middle);
+        return this;
     }
 
     /**
@@ -56,6 +70,9 @@ class Store {
        
         this._emitter.emit(this._eventName);
     }
+   /* dispatch(action) {
+        this._dispatch(action);
+    }*/
     subscribe(subscribe) {
         this._emitter.on(this._eventName, subscribe);
     }
@@ -103,9 +120,44 @@ const store = myRedux.createStore({
   name: nameReducer
 },state);
 store.subscribe(function(){
-    console.log('default--->',state)
+    //console.log('default--->',state)
     console.log('store--->',store.state);
 });
 
-store.dispatch(action);
-store.dispatch(action3);
+//store.dispatch(action);
+//store.dispatch(action3);
+
+function logger(store) {
+    let next = store.dispatch;
+
+    store.dispatch = function(action) {
+        console.log("logger1 strat");
+        next.call(store,action)
+        console.log("logger1 end")
+    }
+
+    return store;
+}
+
+function logger2(store) {
+    let next = store.dispatch;
+
+    store.dispatch = function(action) {
+        console.log("logger2 strat");
+        next.call(store,action)
+        console.log("logger2 end")
+    }
+
+    return store;
+}
+
+function useMiddleware(store, middles) {
+    middles.reverse();
+    middles.forEach((middle)=>{
+        middle(store);
+    })
+}
+
+useMiddleware(store,[logger,logger2]);
+store.dispatch(action)
+store.dispatch(action3)
