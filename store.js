@@ -109,6 +109,7 @@ function countReducer(count, action) {
     } 
 }
 function nameReducer(name, action) {
+    console.log(action.type)
    if(action.type=="CHANGE_NAME") {
      return name+"!"
    }
@@ -127,16 +128,16 @@ store.subscribe(function(){
 //store.dispatch(action);
 //store.dispatch(action3);
 
-function logger(store,action,next) {
-    return function() {
+function logger(store,next) {
+    return function(action) {
         console.log("logger1 strat");
         next.call(store,action)
         console.log("logger1 end")
     }
 }
 
-function logger2(store,action,next) {
-    return function() {
+function logger2(store,next) {
+    return function(action) {
         console.log("logger2 strat");
         next.call(store,action)
         console.log("logger2 end")
@@ -147,7 +148,7 @@ function useMiddleware(store, middles) {
     middles.reverse();
     middles.forEach((middle)=>{
         let next = store.dispatch;
-        store.dispatch = middle(store,action,next);
+        store.dispatch = middle(store,next);
     })
 }
 
