@@ -8,7 +8,7 @@
 
 const EventEmitter = require('events').EventEmitter;
 
-const myStore = {};
+const myRedux = {};
 
 class Store {
     constructor(state) {
@@ -61,7 +61,7 @@ class Store {
     }
 }
 
-myStore.createStore = function(updaters, defaultState){
+myRedux.createStore = function(updaters, defaultState){
     let store = new Store(defaultState);
     store.setUpdaters(updaters);
     return store;
@@ -98,7 +98,7 @@ function nameReducer(name, action) {
    return name;
    
 }
-const store = myStore.createStore({
+const store = myRedux.createStore({
   count: countReducer,
   name: nameReducer
 },state);
