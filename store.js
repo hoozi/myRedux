@@ -8,6 +8,7 @@
 
 const EventEmitter = require('events').EventEmitter;
 
+const myStore = {};
 
 class Store {
     constructor(state) {
@@ -60,11 +61,17 @@ class Store {
     }
 }
 
+myStore.createStore = function(updaters, defaultState){
+    let store = new Store(defaultState);
+    store.setUpdaters(updaters);
+    return store;
+}
 
-const store = new Store({
+const state = {
     count:0,
     name:"hoozi"
-});
+}
+
 const action = {
     type:"ADD"
 }
@@ -91,12 +98,13 @@ function nameReducer(name, action) {
    return name;
    
 }
-store.setUpdaters({
+const store = myStore.createStore({
   count: countReducer,
   name: nameReducer
-});
+},state);
 store.subscribe(function(){
-    console.log(store.state);
+    console.log('default--->',state)
+    console.log('store--->',store.state);
 });
 
 store.dispatch(action);
