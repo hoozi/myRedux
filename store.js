@@ -149,14 +149,6 @@ const logger2 = store => next => action => {
      console.log("logger2 end")
 }
 
-/*function logger2(store,next) {
-    return function(action) {
-        console.log("logger2 strat");
-        next.call(store,action)
-        console.log("logger2 end")
-    }
-}*/
-
 function useMiddleware(store, middles) {
     middles.reverse();
     middles.forEach((middle)=>{
