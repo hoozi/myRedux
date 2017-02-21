@@ -128,27 +128,40 @@ store.subscribe(function(){
 //store.dispatch(action);
 //store.dispatch(action3);
 
-function logger(store,next) {
+/*function logger(store,next) {
     return function(action) {
         console.log("logger1 strat");
         next.call(store,action)
         console.log("logger1 end")
     }
+}*/
+
+
+const logger = store => next => action => {
+     console.log("logger1 strat");
+     next.call(store,action)
+     console.log("logger1 end")
 }
 
-function logger2(store,next) {
+const logger2 = store => next => action => {
+     console.log("logger2 strat");
+     next.call(store,action)
+     console.log("logger2 end")
+}
+
+/*function logger2(store,next) {
     return function(action) {
         console.log("logger2 strat");
         next.call(store,action)
         console.log("logger2 end")
     }
-}
+}*/
 
 function useMiddleware(store, middles) {
     middles.reverse();
     middles.forEach((middle)=>{
         let next = store.dispatch;
-        store.dispatch = middle(store,next);
+        store.dispatch = middle(store)(next);
     })
 }
 
