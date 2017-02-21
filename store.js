@@ -127,34 +127,27 @@ store.subscribe(function(){
 //store.dispatch(action);
 //store.dispatch(action3);
 
-function logger(store) {
-    let next = store.dispatch;
-
-    store.dispatch = function(action) {
+function logger(store,action,next) {
+    return function() {
         console.log("logger1 strat");
         next.call(store,action)
         console.log("logger1 end")
     }
-
-    return store;
 }
 
-function logger2(store) {
-    let next = store.dispatch;
-
-    store.dispatch = function(action) {
+function logger2(store,action,next) {
+    return function() {
         console.log("logger2 strat");
         next.call(store,action)
         console.log("logger2 end")
     }
-
-    return store;
 }
 
 function useMiddleware(store, middles) {
     middles.reverse();
     middles.forEach((middle)=>{
-        middle(store);
+        let next = store.dispatch;
+        store.dispatch = middle(store,action,next);
     })
 }
 
