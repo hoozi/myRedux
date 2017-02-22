@@ -40,10 +40,10 @@ class Store {
      * 
      * @memberOf Store
      */
-    use(middle) {
+    /*use(middle) {
         this._middles.push(middle);
         return this;
-    }
+    }*/
 
     /**
      * 触发

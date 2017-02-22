@@ -6,6 +6,20 @@
 </head>
 <body>
 
-<script src="store.js?t=2"></script>
+<script>
+var f1 = function(fn){
+    console.log(1)
+    fn()
+}   
+var f2 = function(fn){
+    console.log(2)
+    fn()
+}
+var arr = [f1,f2];
+
+arr.reduceRight((c,f)=>{
+    return f(c);
+});
+</script>
 </body>
 </html>

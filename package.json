@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hoozi/myRedux#readme",
   "dependencies": {
-    "react-redux": "^5.0.2"
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0"
   }
 }
